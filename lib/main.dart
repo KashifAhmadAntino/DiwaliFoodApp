@@ -14,22 +14,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'feature/log_in/view/login_screen.dart';
 
-
-
-
-
 Future<void> main() async {
   await runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
 
-
-
-
-    runApp(MyApp(// translations: GetTranslations.loadTranslations(),
-      child: accessToken == null ? LoginScreen() : LoginScreen(),
+    runApp(MyApp(
+      // translations: GetTranslations.loadTranslations(),
+      child: LoginScreen(),
     ));
-  }, (error, stackTrace) {
-
-  });
+  }, (error, stackTrace) {});
 }
-
