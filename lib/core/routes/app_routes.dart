@@ -31,7 +31,7 @@ class GenerateRoute {
       return PageRouteBuilder(
           pageBuilder: (BuildContext context, Animation<double> animation,
                   Animation<double> secondaryAnimation) =>
-              LoginScreen());
+              HomePage());
     }
   }
 }

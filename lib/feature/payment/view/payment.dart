@@ -432,7 +432,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      final token = CookieManager().getCookie("id") ?? "";
+                      final token = CookieManager().getCookie("id");
                       if (token.isNotEmpty) {
                         final order = await HomeServices().placeOrder(result
                             .items!
@@ -440,6 +440,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 {"itemId": item.id, "quantity": item.quantity})
                             .toList());
                         if (order != null) {
+                          Hive.box('Cart').clear();
                           Get.off(() => OrderSuccess(order: order));
                           // Get.to(()=>)
                         } else {}

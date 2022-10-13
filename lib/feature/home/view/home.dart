@@ -39,7 +39,8 @@ class _HomePageState extends State<HomePage> {
             title: Text("MyApp"),
             actions: [
               GestureDetector(
-                  onTap: () => print("hi"), child: Icon(Icons.shopping_bag))
+                  onTap: () => Get.to(() => OrderHistory()),
+                  child: Icon(Icons.shopping_bag))
             ],
           ),
           body: Container(

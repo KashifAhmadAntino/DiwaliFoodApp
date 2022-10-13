@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gif/flutter_gif.dart';
+import 'package:get/get.dart';
 import 'package:mvc_bolierplate_getx/feature/model/order_model.dart';
 
 class OrderSuccess extends StatefulWidget {
@@ -34,16 +35,21 @@ class _OrderSuccessState extends State<OrderSuccess>
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
+        width: double.maxFinite,
         color: Colors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            GifImage(
-                controller: controller1,
-                image: const AssetImage("asset/image-2.gif")),
+            SizedBox(
+              height: size.height * 0.6,
+              child: GifImage(
+                  controller: controller1,
+                  image: const AssetImage("assets/image-2.gif")),
+            ),
             Text(
               'Order ID: ${widget.order.orderDataId}',
               style: const TextStyle(
@@ -63,11 +69,24 @@ class _OrderSuccessState extends State<OrderSuccess>
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                 child: Text(
                   'Please Pay ₹ ${widget.order.finalPrice} at Counter to confirm your order',
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
                       color: Colors.blue,
                       fontWeight: FontWeight.bold,
                       fontSize: 20),
                 )),
+            ElevatedButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: Text(
+                  'Done',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),
+                )).paddingAll(10)
           ],
         ),
       ),
