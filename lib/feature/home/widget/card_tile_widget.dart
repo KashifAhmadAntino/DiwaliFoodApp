@@ -67,13 +67,7 @@ class _CardTileWidgetState extends State<CardTileWidget> {
                       style: TextStyle(color: Colors.black.withOpacity(0.6)),
                     ),
                     Text(
-                                            (int.parse(widget.prod_rate) * widget.counter).toString(),
-
-<<<<<<< HEAD
-                      (prod_rate * counter).toString(),
-=======
-                      (int.parse(widget.prod_rate) * widget.counter).toString(),
->>>>>>> eb9cf10375c3fc0f1658e28f6520858dd9178817
+                                            (int.parse(widget.prod_rate) * widget.counter).toString()
                       ,style: TextStyle(color: Colors.black.withOpacity(0.6)),
                     ),
                   ],
