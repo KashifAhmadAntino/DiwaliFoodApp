@@ -1,0 +1,22 @@
+{
+    "items": [
+        {
+            "title": "Virgin Mojito",
+            "imageUrl": "https://images.pexels.com/photos/213780/pexels-photo-213780.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+            "quantity": "1",
+            "amount": "85"
+        },
+        {
+            "title": "Noodles",
+            "imageUrl": "https://images.pexels.com/photos/213780/pexels-photo-213780.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+            "quantity": "2",
+            "amount": "100"
+        },
+        {
+            "title": "Manchurial",
+            "imageUrl": "https://images.pexels.com/photos/213780/pexels-photo-213780.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+            "quantity": "1",
+            "amount": "130"
+        }
+    ]
+}
