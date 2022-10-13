@@ -8,7 +8,6 @@ import 'package:mvc_bolierplate_getx/core/reponsive/SizeConfig.dart';
 import 'package:mvc_bolierplate_getx/core/routes/app_routes.dart';
 import 'package:mvc_bolierplate_getx/core/universal_widgets/form_field_widget.dart';
 import 'package:mvc_bolierplate_getx/core/universal_widgets/form_submit_widget.dart';
-import 'package:mvc_bolierplate_getx/core/utilites/utility.dart';
 import 'package:mvc_bolierplate_getx/feature/log_in/controller/login_controller.dart';
 
 import '../../../core/universal_widgets/searchable_dropdown.dart';
@@ -84,10 +83,10 @@ class LoginScreen extends StatelessWidget {
               titleStyle: AppTextStyle.whiteMedium16,
               onTap: () {
                 Navigator.pushNamed(context, RouteName.homeScreen);
-                Utility.showInfoDialog(
-                  message: 'Logged In',
-                  isSuccess: true,
-                );
+                // Utility.showInfoDialog(
+                //   message: 'Logged In',
+                //   isSuccess: true,
+                // );
               },
             ),
             SizedBox(
@@ -103,7 +102,7 @@ class LoginScreen extends StatelessWidget {
               titleStyle: AppTextStyle.whiteMedium16
                   .copyWith(color: AppColors.kPureBlack),
               onTap: () async {
-                await loginController.googleAuthentication.signIn();
+                //await loginController.googleAuthentication.signIn();
                 // Navigator.pushNamed(context, RouteName.homeScreen);
                 // Utility.showInfoDialog(
                 //   message: 'Logged In',
