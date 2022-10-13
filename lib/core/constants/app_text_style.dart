@@ -8,8 +8,28 @@ abstract class AppTextStyle {
     fontWeight: FontWeight.bold,
   );
 
+  static TextStyle blackBold20 = GoogleFonts.montserrat(
+    fontSize: 20 * SizeConfig.textMultiplier!,
+    fontWeight: FontWeight.bold,
+  );
+  static TextStyle blackBold14 = GoogleFonts.montserrat(
+    fontSize: 14 * SizeConfig.textMultiplier!,
+    fontWeight: FontWeight.bold,
+  );
+
+  static TextStyle blackBold10 = GoogleFonts.montserrat(
+    fontSize: 10 * SizeConfig.textMultiplier!,
+    fontWeight: FontWeight.bold,
+  );
+
   static TextStyle greyMedium14 = GoogleFonts.montserrat(
     fontSize: 14 * SizeConfig.textMultiplier!,
+    fontWeight: FontWeight.w500,
+    color: Colors.grey.shade700,
+  );
+
+  static TextStyle greyMedium10 = GoogleFonts.montserrat(
+    fontSize: 10 * SizeConfig.textMultiplier!,
     fontWeight: FontWeight.w500,
     color: Colors.grey.shade700,
   );

@@ -71,7 +71,8 @@ class _CardTileWidgetState extends State<CardTileWidget> {
                           child: ElevatedButton(
                               onPressed: () {},
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green),
+                                  // backgroundColor: Colors.green
+                                  ),
                               child: const Text(
                                 'ADD',
                                 style: TextStyle(
