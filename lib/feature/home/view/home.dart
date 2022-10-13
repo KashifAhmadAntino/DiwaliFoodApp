@@ -9,6 +9,7 @@ import 'package:mvc_bolierplate_getx/feature/home/controller/home_controller.dar
 import 'package:mvc_bolierplate_getx/feature/home/service/service.dart';
 import 'package:mvc_bolierplate_getx/feature/home/widget/card_tile_widget.dart';
 import 'package:mvc_bolierplate_getx/feature/payment/view/payment.dart';
+import 'package:mvc_bolierplate_getx/feature/payment/view/order_history.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
