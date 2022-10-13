@@ -8,11 +8,15 @@ class OrderHistoryController extends GetxController {
   @override
   void onInit() {
     fetch();
+    print("done here");
     super.onInit();
   }
 
   fetch() async {
-    data.value = (await orderHistoryServices.getData());
-    print(data.value.toJson().toString());
+    final response = await orderHistoryServices.getData();
+    print(response);
+    data.value = response;
+    print("HI ther " + data.value.toJson().toString());
+    update();
   }
 }
