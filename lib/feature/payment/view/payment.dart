@@ -1,8 +1,13 @@
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:mvc_bolierplate_getx/core/cookie_service.dart';
+import 'package:mvc_bolierplate_getx/feature/home/service/service.dart';
 import 'package:mvc_bolierplate_getx/feature/payment/controller/payment_controller.dart';
+import 'package:mvc_bolierplate_getx/feature/payment/view/order_success.dart';
 
 import '../../model/payment_model.dart';
 import 'order_history.dart';
@@ -19,33 +24,170 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     super.initState();
+
     callJson();
   }
 
   PaymentModel result = PaymentModel();
 
+  String? name;
+  String? phoneNo;
+  final formKey = GlobalKey<FormState>();
+
   Future<void> callJson() async {
-    String data =
-        await DefaultAssetBundle.of(context).loadString("assets/sample.json");
-    final jsonResult = jsonDecode(data);
+    // String data =
+    //     await DefaultAssetBundle.of(context).loadString("assets/sample.json");
+    // final jsonResult = jsonDecode(data);
+    List cartitems = [];
+    final data = Hive.box('Cart');
+    print("gerer");
+    try {
+      for (var element in data.keys) {
+        final item = Map<String, dynamic>.from(data.get(element) as Map);
+        cartitems.add(item);
+        print(item);
+      }
+      final jsonResult = {'items': cartitems.toList()};
+      PaymentModel paymentModel = PaymentModel.fromJson(jsonResult);
+      setState(() {
+        result = paymentModel;
+      });
 
-    PaymentModel paymentModel = PaymentModel.fromJson(jsonResult);
-    setState(() {
-      result = paymentModel;
-    });
-
-    getTotal();
+      getTotal();
+    } catch (e) {
+      print(e);
+    }
   }
 
   getTotal() {
     for (var i = 0; i < result.items!.length; i++) {
       setState(() {
         paymentController.grand_total.value +=
-            int.parse(result.items![i].amount!) *
-                int.parse(result.items![i].quantity!);
+            int.parse(result.items![i].amount!) * result.items![i].quantity!;
       });
       print(paymentController.grand_total.value.toString() + "hema");
     }
+  }
+
+  loginDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => Dialog(
+            backgroundColor: Colors.white,
+            insetPadding: EdgeInsets.symmetric(horizontal: 20),
+            child: Container(
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              height: 300,
+              child: Stack(
+                  //overflow: Overflow.visible,
+                  clipBehavior: Clip.none,
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    Positioned(
+                        top: -100,
+                        child: Image.asset("assets/image-1.png",
+                            width: 175, height: 175)),
+                    Form(
+                      key: formKey,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Enter Your Details!",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.red,
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: TextFormField(
+                                onSaved: (value) {
+                                  name = value!.trim();
+                                },
+                                validator: (value) {
+                                  return value == null || value.isEmpty
+                                      ? "Name is empty"
+                                      : null;
+                                },
+                                decoration: const InputDecoration(
+                                    hintText: "Enter your name"),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: TextFormField(
+                                onSaved: (value) {
+                                  phoneNo = value!.trim();
+                                },
+                                validator: (value) {
+                                  return value == null ||
+                                          value.trim().length != 10
+                                      ? "Mobile number is empty/invalid"
+                                      : null;
+                                },
+                                decoration: const InputDecoration(
+                                    hintText: "Enter your phone number"),
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0, vertical: 0),
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                        ),
+                                        onPressed: () async {
+                                          if (formKey.currentState!
+                                              .validate()) {
+                                            formKey.currentState!.save();
+                                            final token = await HomeServices()
+                                                .login(name.toString(),
+                                                    phoneNo.toString());
+                                            print("token : $token");
+                                            if (token.isNotEmpty()) {
+                                              final order = await HomeServices()
+                                                  .placeOrder(result.items!
+                                                      .map((item) => {
+                                                            "itemId": item.id,
+                                                            "quantity":
+                                                                item.quantity
+                                                          })
+                                                      .toList());
+                                              if (order != null) {
+                                                Navigator.pop(context);
+                                                Get.off(() =>
+                                                    OrderSuccess(order: order));
+                                                // Get.to(()=>)
+                                              } else {
+                                                Navigator.pop(context);
+                                              }
+                                            }
+                                          }
+                                        },
+                                        child: const Text(
+                                          'Place Order!',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontStyle: FontStyle.italic),
+                                        )),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ]),
+                    ),
+                  ]),
+            )));
   }
 
   @override
@@ -75,7 +217,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   itemBuilder: (context, index) {
                     paymentController.food_amount.value =
                         int.parse(result.items![index].amount!) *
-                            int.parse(result.items![index].quantity!);
+                            result.items![index].quantity!;
                     // grand_total += food_amount!;
                     // print(grand_total);
                     // food_quantity = int.parse(result.items![index].quantity!);
@@ -165,7 +307,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: Image.network(
-                                  'https://images.pexels.com/photos/213780/pexels-photo-213780.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+                                  result.items![index].imageUrl!,
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -289,8 +431,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     height: 10,
                   ),
                   GestureDetector(
-                    onTap: () {
-                      Get.to(OrderHistory());
+                    onTap: () async {
+                      final token = CookieManager().getCookie("id") ?? "";
+                      if (token.isNotEmpty) {
+                        final order = await HomeServices().placeOrder(result
+                            .items!
+                            .map((item) =>
+                                {"itemId": item.id, "quantity": item.quantity})
+                            .toList());
+                        if (order != null) {
+                          Get.off(() => OrderSuccess(order: order));
+                          // Get.to(()=>)
+                        } else {}
+                      }
                     },
                     child: Container(
                       height: 50,

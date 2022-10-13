@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:mvc_bolierplate_getx/core/cookie_service.dart';
 import '../constants/image_path.dart';
 
 class DioUtil {
@@ -18,6 +19,8 @@ class DioUtil {
     // adding interceptor
     dio.interceptors.clear();
     dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
+      final accessToken = CookieManager().getCookie("id");
+      options.headers["Authorization"] = "Bearer $accessToken";
       return handler.next(options); //modify your request
     }, onResponse: (response, handler) {
       // ignore: unnecessary_null_comparison

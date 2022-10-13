@@ -22,26 +22,28 @@ class PaymentModel {
 }
 
 class Items {
+  String? id;
   String? title;
   String? imageUrl;
-  String? quantity;
+  int? quantity;
   String? amount;
 
-  Items({this.title, this.imageUrl, this.quantity, this.amount});
+  Items({this.id, this.title, this.imageUrl, this.quantity, this.amount});
 
   Items.fromJson(Map<String, dynamic> json) {
-    title = json['title'];
-    imageUrl = json['imageUrl'];
+    id = json['id'];
+    title = json['name'];
+    imageUrl = json['url'];
     quantity = json['quantity'];
-    amount = json['amount'];
+    amount = json['price'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['title'] = this.title;
-    data['imageUrl'] = this.imageUrl;
+    data['name'] = this.title;
+    data['url'] = this.imageUrl;
     data['quantity'] = this.quantity;
-    data['amount'] = this.amount;
+    data['price'] = this.amount;
     return data;
   }
 }
