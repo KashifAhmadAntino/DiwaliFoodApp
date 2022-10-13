@@ -43,11 +43,11 @@ class Datum {
     required this.orderNo,
   });
 
-  final String id;
-  final int finalPrice;
-  final String otp;
-  final List<Item> items;
-  final int orderNo;
+  final String? id;
+  final int? finalPrice;
+  final String? otp;
+  final List<Item>? items;
+  final int? orderNo;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["_id"],
@@ -61,7 +61,7 @@ class Datum {
         "_id": id,
         "finalPrice": finalPrice,
         "otp": otp,
-        "items": List<dynamic>.from(items.map((x) => x.toJson())),
+        "items": List<dynamic>.from(items!.map((x) => x.toJson())),
         "orderNo": orderNo == null ? null : orderNo,
       };
 }
@@ -76,12 +76,12 @@ class Item {
     required this.discription,
   });
 
-  final String id;
-  final int quantity;
-  final String name;
-  final String price;
-  final String url;
-  final String discription;
+  final String? id;
+  final int? quantity;
+  final String? name;
+  final String? price;
+  final String? url;
+  final String? discription;
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
         id: json["_id"],
