@@ -6,13 +6,20 @@ class CardTileWidget extends StatefulWidget {
       {Key? key,
       required this.prod_name,
       required this.prod_rate,
-      required this.prod_subtext})
+      required this.prod_subtext,
+      required this.prod_url,
+      required this.counter,
+      required this.addProduct,
+      required this.removeProduct})
       : super(key: key);
 
-  final int counter = 0;
-  String prod_name;
-  String prod_subtext;
-  int prod_rate;
+  final int counter;
+  final String prod_name;
+  final String prod_subtext;
+  final String prod_rate;
+  final String prod_url;
+  final VoidCallback addProduct;
+  final VoidCallback removeProduct;
 
   @override
   State<CardTileWidget> createState() => _CardTileWidgetState();
@@ -22,8 +29,8 @@ class _CardTileWidgetState extends State<CardTileWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 200,
-      height: 300,
+      width: 170,
+      height: 280,
       child: Card(
         color: Colors.white,
         clipBehavior: Clip.antiAlias,
@@ -32,10 +39,14 @@ class _CardTileWidgetState extends State<CardTileWidget> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Padding(
-              //   padding: const EdgeInsets.all(18.0),
-              //   child: Image.network(""),
-              // ),
+              SizedBox(
+                width: double.maxFinite,
+                height: 120,
+                child: Image.network(
+                  widget.prod_url,
+                  fit: BoxFit.fill,
+                ),
+              ),
               ListTile(
                 //leading: Icon(Icons.arrow_drop_down_circle),
                 title: Text(
@@ -48,12 +59,12 @@ class _CardTileWidgetState extends State<CardTileWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.symmetric(vertical: 5.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      widget.prod_rate.toString(),
+                      "₹ ${widget.prod_rate.toString()}",
                       style: TextStyle(color: Colors.black.withOpacity(0.6)),
                     ),
                     Text(
@@ -69,7 +80,10 @@ class _CardTileWidgetState extends State<CardTileWidget> {
                       children: [
                         Expanded(
                           child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                print('add');
+                                widget.addProduct();
+                              },
                               style: ElevatedButton.styleFrom(
                                   // backgroundColor: Colors.green
                                   ),
@@ -94,7 +108,7 @@ class _CardTileWidgetState extends State<CardTileWidget> {
                                 borderRadius: BorderRadius.circular(12.0),
                                 border: Border.all(color: Colors.green)),
                             child: TextButton(
-                                onPressed: () {},
+                                onPressed: () => widget.removeProduct,
                                 child: const Text(
                                   '-',
                                   style: TextStyle(
@@ -116,7 +130,7 @@ class _CardTileWidgetState extends State<CardTileWidget> {
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: TextButton(
-                                onPressed: () {},
+                                onPressed: () => widget.addProduct,
                                 child: const Text(
                                   '+',
                                   style: TextStyle(
