@@ -30,7 +30,6 @@ class _CardTileWidgetState extends State<CardTileWidget> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 170,
-      height: 280,
       child: Card(
         color: Colors.white,
         clipBehavior: Clip.antiAlias,
@@ -68,7 +67,7 @@ class _CardTileWidgetState extends State<CardTileWidget> {
                       style: TextStyle(color: Colors.black.withOpacity(0.6)),
                     ),
                     Text(
-                      (widget.prod_rate * widget.counter).toString(),
+                      (int.parse(widget.prod_rate) * widget.counter).toString(),
                       style: TextStyle(color: Colors.black.withOpacity(0.6)),
                     ),
                   ],
@@ -99,45 +98,39 @@ class _CardTileWidgetState extends State<CardTileWidget> {
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8),
+                        GestureDetector(
+                          onTap: () {
+                            widget.removeProduct();
+                          },
                           child: Container(
-                            height: 40,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12.0),
-                                border: Border.all(color: Colors.green)),
-                            child: TextButton(
-                                onPressed: () => widget.removeProduct,
-                                child: const Text(
-                                  '-',
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontWeight: FontWeight.bold),
-                                )),
-                          ),
+                              padding: const EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  border: Border.all(color: Colors.red)),
+                              child: Icon(
+                                Icons.remove,
+                                color: Colors.red,
+                              )),
                         ),
                         Text(
                           widget.counter.toString(),
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 12.0),
+                        GestureDetector(
+                          onTap: () {
+                            widget.addProduct();
+                          },
                           child: Container(
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            child: TextButton(
-                                onPressed: () => widget.addProduct,
-                                child: const Text(
-                                  '+',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                )),
-                          ),
+                              padding: const EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              )),
                         ),
                       ],
                     )
