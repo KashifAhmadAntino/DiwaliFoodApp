@@ -18,7 +18,7 @@ class CardTileWidget extends StatefulWidget {
   final String prod_subtext;
   final String prod_rate;
   final String prod_url;
-  final VoidCallback addProduct;
+  final Function() addProduct;
   final VoidCallback removeProduct;
 
   @override
@@ -67,34 +67,24 @@ class _CardTileWidgetState extends State<CardTileWidget> {
                       style: TextStyle(color: Colors.black.withOpacity(0.6)),
                     ),
                     Text(
-                      (int.parse(widget.prod_rate) * widget.counter).toString(),
-                      style: TextStyle(color: Colors.black.withOpacity(0.6)),
+                                            (int.parse(widget.prod_rate) * widget.counter).toString()
+                      ,style: TextStyle(color: Colors.black.withOpacity(0.6)),
                     ),
                   ],
                 ),
               ),
               SizedBox(height: 10),
               widget.counter == 0
-                  ? Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                              onPressed: () {
-                                print('add');
-                                widget.addProduct();
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  // backgroundColor: Colors.green
-                                  ),
-                              child: const Text(
-                                'ADD',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              )),
-                        ),
-                      ],
-                    )
+                  ? ElevatedButton(
+                      onPressed: widget.addProduct,
+                      style: ElevatedButton.styleFrom(
+                          // backgroundColor: Colors.green
+                          ),
+                      child: const Text(
+                        'ADD',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ))
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
