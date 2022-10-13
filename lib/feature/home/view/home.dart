@@ -6,6 +6,7 @@ import 'package:mvc_bolierplate_getx/core/reponsive/SizeConfig.dart';
 import 'package:mvc_bolierplate_getx/feature/home/controller/home_controller.dart';
 import 'package:mvc_bolierplate_getx/feature/home/service/service.dart';
 import 'package:mvc_bolierplate_getx/feature/home/widget/card_tile_widget.dart';
+import 'package:mvc_bolierplate_getx/feature/payment/view/order_history.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -35,7 +36,8 @@ class _HomePageState extends State<HomePage> {
           title: Text("MyApp"),
           actions: [
             GestureDetector(
-                onTap: () => print("hi"), child: Icon(Icons.shopping_bag))
+                onTap: () => Get.to(() => OrderHistory()),
+                child: Icon(Icons.shopping_bag))
           ],
         ),
         body: Container(
@@ -65,6 +67,7 @@ class _HomePageState extends State<HomePage> {
                                 _homeController.items[index].discription,
                             prod_url: _homeController.items[index].url,
                             addProduct: () {
+                              print("Hi there");
                               _homeController
                                   .addProduct(_homeController.items[index]);
                             },
@@ -110,12 +113,16 @@ class _HomePageState extends State<HomePage> {
             //   ),
             ),
         bottomNavigationBar: _homeController.cart.length == 0
-            ? Container()
+            ? Container(
+              height: 0,
+            )
             : Container(
                 height: 50 * SizeConfig.heightMultiplier!,
                 margin: EdgeInsets.all(10.0 * SizeConfig.heightMultiplier!),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    print("hey fellow");
+                  },
                   child: const Text("Proceed"),
                 ),
               ),

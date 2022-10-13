@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_bolierplate_getx/core/reponsive/SizeConfig.dart';
 
-class CardTileWidget extends StatefulWidget {
+class CardTileWidget extends StatelessWidget {
   CardTileWidget(
       {Key? key,
       required this.prod_name,
@@ -18,14 +18,9 @@ class CardTileWidget extends StatefulWidget {
   final String prod_subtext;
   final String prod_rate;
   final String prod_url;
-  final VoidCallback addProduct;
+  final Function() addProduct;
   final VoidCallback removeProduct;
 
-  @override
-  State<CardTileWidget> createState() => _CardTileWidgetState();
-}
-
-class _CardTileWidgetState extends State<CardTileWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -43,18 +38,18 @@ class _CardTileWidgetState extends State<CardTileWidget> {
                 width: double.maxFinite,
                 height: 120,
                 child: Image.network(
-                  widget.prod_url,
+                  prod_url,
                   fit: BoxFit.fill,
                 ),
               ),
               ListTile(
                 //leading: Icon(Icons.arrow_drop_down_circle),
                 title: Text(
-                  widget.prod_name,
+                  prod_name,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
-                  widget.prod_subtext,
+                  prod_subtext,
                   style: TextStyle(color: Colors.black.withOpacity(0.6)),
                 ),
               ),
@@ -64,38 +59,28 @@ class _CardTileWidgetState extends State<CardTileWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "₹ ${widget.prod_rate.toString()}",
+                      "₹ ${prod_rate.toString()}",
                       style: TextStyle(color: Colors.black.withOpacity(0.6)),
                     ),
                     Text(
-                      (widget.prod_rate * widget.counter).toString(),
+                      (prod_rate * counter).toString(),
                       style: TextStyle(color: Colors.black.withOpacity(0.6)),
                     ),
                   ],
                 ),
               ),
               SizedBox(height: 10),
-              widget.counter == 0
-                  ? Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                              onPressed: () {
-                                print('add');
-                                widget.addProduct();
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  // backgroundColor: Colors.green
-                                  ),
-                              child: const Text(
-                                'ADD',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              )),
-                        ),
-                      ],
-                    )
+              counter == 0
+                  ? ElevatedButton(
+                      onPressed: addProduct,
+                      style: ElevatedButton.styleFrom(
+                          // backgroundColor: Colors.green
+                          ),
+                      child: const Text(
+                        'ADD',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ))
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -108,7 +93,7 @@ class _CardTileWidgetState extends State<CardTileWidget> {
                                 borderRadius: BorderRadius.circular(12.0),
                                 border: Border.all(color: Colors.green)),
                             child: TextButton(
-                                onPressed: () => widget.removeProduct,
+                                onPressed: () => removeProduct,
                                 child: const Text(
                                   '-',
                                   style: TextStyle(
@@ -118,7 +103,7 @@ class _CardTileWidgetState extends State<CardTileWidget> {
                           ),
                         ),
                         Text(
-                          widget.counter.toString(),
+                          counter.toString(),
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Padding(
@@ -130,7 +115,7 @@ class _CardTileWidgetState extends State<CardTileWidget> {
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: TextButton(
-                                onPressed: () => widget.addProduct,
+                                onPressed: () => addProduct,
                                 child: const Text(
                                   '+',
                                   style: TextStyle(
