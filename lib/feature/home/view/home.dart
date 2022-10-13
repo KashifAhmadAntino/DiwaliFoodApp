@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
@@ -59,7 +61,19 @@ class _HomePageState extends State<HomePage> {
                         //alignment: WrapAlignment.spaceAround,
                         children: List.generate(_homeController.items.length,
                             (index) {
-                          print(box.get(_homeController.items[index].id));
+                          final item = box.get(_homeController.items[index].id);
+                          // try {
+                          //   if (item != null) {
+                          //     final cartitem = Map<String, dynamic>.from(box
+                          //         .get(_homeController.items[index].id) as Map);
+                          //     print(cartitem['quantity']);
+                          //   }
+                          //   print('json');
+                          // } on Exception {
+                          //   print(item);
+                          // }
+                          //print(item['quantity']);
+
                           return CardTileWidget(
                             prod_name: _homeController.items[index].name,
                             prod_rate: _homeController.items[index].price,
@@ -71,8 +85,12 @@ class _HomePageState extends State<HomePage> {
                               _homeController
                                   .addProduct(_homeController.items[index]);
                             },
-                            counter:
-                                box.get(_homeController.items[index].id) ?? 0,
+                            counter: item != null
+                                ? Map<String, dynamic>.from(
+                                    box.get(_homeController.items[index].id)
+                                        as Map)['quantity']
+                                : 0,
+                            //  box.get(_homeController.items[index].id) ?? 0,
                             removeProduct: () {
                               _homeController
                                   .removeProduct(_homeController.items[index]);
@@ -115,8 +133,7 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: _homeController.cart.length == 0
             ? Container(
               height: 0,
-            )
-            : Container(
+            ):Container(
                 height: 50 * SizeConfig.heightMultiplier!,
                 margin: EdgeInsets.all(10.0 * SizeConfig.heightMultiplier!),
                 child: ElevatedButton(

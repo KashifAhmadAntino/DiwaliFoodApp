@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_bolierplate_getx/core/reponsive/SizeConfig.dart';
 
-class CardTileWidget extends StatelessWidget {
+class CardTileWidget extends StatefulWidget {
   CardTileWidget(
       {Key? key,
       required this.prod_name,
@@ -22,10 +22,14 @@ class CardTileWidget extends StatelessWidget {
   final VoidCallback removeProduct;
 
   @override
+  State<CardTileWidget> createState() => _CardTileWidgetState();
+}
+
+class _CardTileWidgetState extends State<CardTileWidget> {
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 170,
-      height: 280,
       child: Card(
         color: Colors.white,
         clipBehavior: Clip.antiAlias,
@@ -38,18 +42,18 @@ class CardTileWidget extends StatelessWidget {
                 width: double.maxFinite,
                 height: 120,
                 child: Image.network(
-                  prod_url,
+                  widget.prod_url,
                   fit: BoxFit.fill,
                 ),
               ),
               ListTile(
                 //leading: Icon(Icons.arrow_drop_down_circle),
                 title: Text(
-                  prod_name,
+                  widget.prod_name,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
-                  prod_subtext,
+                  widget.prod_subtext,
                   style: TextStyle(color: Colors.black.withOpacity(0.6)),
                 ),
               ),
@@ -59,20 +63,26 @@ class CardTileWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "₹ ${prod_rate.toString()}",
+                      "₹ ${widget.prod_rate.toString()}",
                       style: TextStyle(color: Colors.black.withOpacity(0.6)),
                     ),
                     Text(
+                                            (int.parse(widget.prod_rate) * widget.counter).toString(),
+
+<<<<<<< HEAD
                       (prod_rate * counter).toString(),
-                      style: TextStyle(color: Colors.black.withOpacity(0.6)),
+=======
+                      (int.parse(widget.prod_rate) * widget.counter).toString(),
+>>>>>>> eb9cf10375c3fc0f1658e28f6520858dd9178817
+                      ,style: TextStyle(color: Colors.black.withOpacity(0.6)),
                     ),
                   ],
                 ),
               ),
               SizedBox(height: 10),
-              counter == 0
+              widget.counter == 0
                   ? ElevatedButton(
-                      onPressed: addProduct,
+                      onPressed: widget.addProduct,
                       style: ElevatedButton.styleFrom(
                           // backgroundColor: Colors.green
                           ),
@@ -84,45 +94,39 @@ class CardTileWidget extends StatelessWidget {
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8),
+                        GestureDetector(
+                          onTap: () {
+                            widget.removeProduct();
+                          },
                           child: Container(
-                            height: 40,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12.0),
-                                border: Border.all(color: Colors.green)),
-                            child: TextButton(
-                                onPressed: () => removeProduct,
-                                child: const Text(
-                                  '-',
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontWeight: FontWeight.bold),
-                                )),
-                          ),
+                              padding: const EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  border: Border.all(color: Colors.red)),
+                              child: Icon(
+                                Icons.remove,
+                                color: Colors.red,
+                              )),
                         ),
                         Text(
-                          counter.toString(),
+                          widget.counter.toString(),
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 12.0),
+                        GestureDetector(
+                          onTap: () {
+                            widget.addProduct();
+                          },
                           child: Container(
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            child: TextButton(
-                                onPressed: () => addProduct,
-                                child: const Text(
-                                  '+',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                )),
-                          ),
+                              padding: const EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              )),
                         ),
                       ],
                     )
