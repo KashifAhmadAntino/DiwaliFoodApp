@@ -9,6 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:mvc_bolierplate_getx/feature/home/view/home.dart';
 import 'package:mvc_bolierplate_getx/my_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,9 +19,9 @@ Future<void> main() async {
   await runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
 
-    runApp(MyApp(
+    runApp(const MyApp(
       // translations: GetTranslations.loadTranslations(),
-      child: LoginScreen(),
+      child: HomePage(),
     ));
   }, (error, stackTrace) {});
 }
