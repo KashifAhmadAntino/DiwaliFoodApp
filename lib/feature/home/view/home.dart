@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
           appBar: AppBar(
-            title: Text("MyApp"),
+            title: Text("Food Wizard"),
             actions: [
               if (_homeController.token.value.isNotEmpty)
                 GestureDetector(
@@ -131,11 +131,15 @@ class _HomePageState extends State<HomePage> {
                                 ? Container(
                                     height: 0,
                                   )
-                                : ElevatedButton(
-                                    onPressed: () {
-                                      Get.to(() => const PaymentScreen());
-                                    },
-                                    child: const Text("Proceed"),
+                                : SizedBox(
+                                    width: double.infinity,
+                                    height: 50,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        Get.to(() => const PaymentScreen());
+                                      },
+                                      child: const Text("Proceed"),
+                                    ),
                                   );
                           }))
                 ],

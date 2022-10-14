@@ -47,11 +47,10 @@ class _OrderSuccessState extends State<OrderSuccess>
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: size.height * 0.6,
-              child: Lottie.asset('assets/107043-success.json'),
-            ),
+                height: size.height * 0.6,
+                child: Image.asset("assets/Pizza maker-bro.png")),
             Text(
-              'Order ID: ${widget.order.orderDataId}',
+              'Order ID: ${widget.order.orderNo}',
               style: const TextStyle(
                   color: Colors.grey, fontWeight: FontWeight.bold),
             ),
