@@ -22,6 +22,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final HomeController _homeController = Get.put(HomeController());
 
+  late PageController _pageController;
+
+  List<String> images = [
+    "assets/meme1.png",
+    "assets/meme2.png",
+    "assets/meme3.png"];
+
+  int activePage = 1;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -30,7 +39,50 @@ class _HomePageState extends State<HomePage> {
     print('fetching items');
 
     _homeController.fetchItems();
+    _pageController = PageController(viewportFraction: 0.8, initialPage: 1);
     super.initState();
+  }
+
+  AnimatedContainer slider(images, pagePosition, active) {
+    double margin = active ? 10 : 20;
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOutCubic,
+      margin: EdgeInsets.all(margin),
+      decoration:  BoxDecoration(
+          image: DecorationImage( image: AssetImage(images[pagePosition]))),
+    );
+  }
+
+  imageAnimation(PageController animation, images, pagePosition) {
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (context, widget) {
+        print(pagePosition);
+        return SizedBox(
+          width: 200,
+          height: 200,
+          child: widget,
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.all(10),
+        child: Image.network(images[pagePosition]),
+      ),
+    );
+  }
+
+  List<Widget> indicators(imagesLength, currentIndex) {
+    return List<Widget>.generate(imagesLength, (index) {
+      return Container(
+        margin: EdgeInsets.all(3),
+        width: 10,
+        height: 10,
+        decoration: BoxDecoration(
+            color: currentIndex == index ? Colors.black : Colors.black26,
+            shape: BoxShape.circle),
+      );
+    });
   }
 
   @override
@@ -42,8 +94,8 @@ class _HomePageState extends State<HomePage> {
               if (_homeController.token.value.isNotEmpty)
                 GestureDetector(
                     onTap: () => Get.to(() => OrderHistory()),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Icon(Icons.menu),
                     ))
             ],
@@ -57,14 +109,7 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                       child: _homeController.items.isEmpty
                           ? _homeController.isFetched.value
-                              ? ListView(
-                                  children: [1, 2, 3]
-                                      .map((e) => Image.network(
-                                            'https://res.cloudinary.com/practicaldev/image/fetch/s--MOKp0Jew--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://www.probytes.net/wp-content/uploads/2018/01/4-1.png',
-                                            width: double.maxFinite,
-                                          ))
-                                      .toList(),
-                                )
+                              ? _carousalView()
                               : const Center(
                                   child: CircularProgressIndicator(),
                                 )
@@ -176,4 +221,45 @@ class _HomePageState extends State<HomePage> {
               ),
         ));
   }
+
+
+  Widget _carousalView(){
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("We are serving soon !!",style: TextStyle(
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+
+        ),),
+        SizedBox(
+          height: 40,
+        ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: 200,
+          child: PageView.builder(
+              itemCount: images.length,
+              pageSnapping: true,
+              controller: _pageController,
+              onPageChanged: (page) {
+                setState(() {
+                  activePage = page;
+                });
+              },
+              itemBuilder: (context, pagePosition) {
+                bool active = pagePosition == activePage;
+                return slider(images, pagePosition, active);
+              }),
+        ),
+
+        Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: indicators(images.length,activePage))
+      ],
+    );
+
+  }
 }
+
+
