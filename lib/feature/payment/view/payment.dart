@@ -4,7 +4,9 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:mvc_bolierplate_getx/core/alert_dialog.dart';
 import 'package:mvc_bolierplate_getx/core/cookie_service.dart';
+import 'package:mvc_bolierplate_getx/core/custom_toast.dart';
 import 'package:mvc_bolierplate_getx/feature/home/service/service.dart';
 import 'package:mvc_bolierplate_getx/feature/payment/controller/payment_controller.dart';
 import 'package:mvc_bolierplate_getx/feature/payment/view/order_success.dart';
@@ -69,8 +71,39 @@ class _PaymentScreenState extends State<PaymentScreen> {
     }
   }
 
+  loginAndPlaceOrder() async {
+    Get.back();
+    ProgressDialog().openProgressDialog();
+    final String token =
+        await HomeServices().login(name.toString(), phoneNo.toString());
+    print("token : $token");
+    if (token.isNotEmpty) {
+      final order = await HomeServices().placeOrder(result.items!
+          .map((item) => {"itemId": item.id, "quantity": item.quantity})
+          .toList());
+      if (order != null) {
+        Hive.box('Cart').clear();
+        ProgressDialog().closeProgressDialog(
+          onDialogClosed: () => Get.off(() => OrderSuccess(order: order)),
+        );
+
+        // Get.to(()=>)
+      } else {
+        ProgressDialog().closeProgressDialog(
+            onDialogClosed: () => ShowCustomToast().showToast(
+                errorMessage: true, message: "Unable to Place Order"));
+      }
+    } else {
+      ProgressDialog().closeProgressDialog(
+          onDialogClosed: () => ShowCustomToast().showToast(
+              errorMessage: true,
+              message: "Unable to Authorize!! Please try again"));
+    }
+  }
+
   loginDialog() {
     showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (BuildContext context) => Dialog(
             backgroundColor: Colors.white,
@@ -150,28 +183,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           if (formKey.currentState!
                                               .validate()) {
                                             formKey.currentState!.save();
-                                            final token = await HomeServices()
-                                                .login(name.toString(),
-                                                    phoneNo.toString());
-                                            print("token : $token");
-                                            if (token.isNotEmpty()) {
-                                              final order = await HomeServices()
-                                                  .placeOrder(result.items!
-                                                      .map((item) => {
-                                                            "itemId": item.id,
-                                                            "quantity":
-                                                                item.quantity
-                                                          })
-                                                      .toList());
-                                              if (order != null) {
-                                                Navigator.pop(context);
-                                                Get.off(() =>
-                                                    OrderSuccess(order: order));
-                                                // Get.to(()=>)
-                                              } else {
-                                                Navigator.pop(context);
-                                              }
-                                            }
+                                            loginAndPlaceOrder();
                                           }
                                         },
                                         child: const Text(
@@ -432,8 +444,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      final token = CookieManager().getCookie("id");
+                      final String token = CookieManager().getCookie("id");
                       if (token.isNotEmpty) {
+                        ProgressDialog().openProgressDialog();
                         final order = await HomeServices().placeOrder(result
                             .items!
                             .map((item) =>
@@ -441,9 +454,21 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             .toList());
                         if (order != null) {
                           Hive.box('Cart').clear();
-                          Get.off(() => OrderSuccess(order: order));
+                          ProgressDialog().closeProgressDialog(
+                            onDialogClosed: () =>
+                                Get.off(() => OrderSuccess(order: order)),
+                          );
+
                           // Get.to(()=>)
-                        } else {}
+                        } else {
+                          ProgressDialog().closeProgressDialog(
+                              onDialogClosed: () => ShowCustomToast().showToast(
+                                  errorMessage: true,
+                                  message:
+                                      "Unable to place order ! Please Try Again"));
+                        }
+                      } else {
+                        loginDialog();
                       }
                     },
                     child: Container(

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:mvc_bolierplate_getx/core/alert_dialog.dart';
 import 'package:mvc_bolierplate_getx/core/cookie_service.dart';
 import '../constants/image_path.dart';
 
@@ -32,6 +33,8 @@ class DioUtil {
     }, onError: (DioError e, handler) async {
       if (e.response != null) {
         if (e.response!.statusCode == 403) {
+          ProgressDialog().closeProgressDialog();
+
           // dio.interceptors.requestLock.lock();
           // dio.interceptors.responseLock.lock();
           // RequestOptions requestOptions = e.requestOptions;
@@ -56,6 +59,8 @@ class DioUtil {
           // }
         } else {
           if (e.response!.statusCode == 444) {
+            ProgressDialog().closeProgressDialog();
+
             // final LoginController _controller = Get.put(LoginController());
             // SharedPreferences prefs = await SharedPreferences.getInstance();
             // await prefs.clear();
@@ -68,6 +73,8 @@ class DioUtil {
             // Get.deleteAll();
           }
           if (e.response!.statusCode == 445) {
+            ProgressDialog().closeProgressDialog();
+
             final responseData = jsonDecode(e.response.toString());
             final SnackBar snackBar = SnackBar(
                 content: Text(
@@ -87,12 +94,14 @@ class DioUtil {
             // Get.deleteAll();
           }
           if (e.response!.statusCode == 446) {
+            ProgressDialog().closeProgressDialog();
             final responseData = jsonDecode(e.response.toString());
             final SnackBar snackBar =
                 SnackBar(content: Text(responseData["response"]["message"]));
             snackbarKey.currentState?.showSnackBar(snackBar);
           }
           if (e.response!.statusCode == 401 || e.response!.statusCode == 500) {
+            ProgressDialog().closeProgressDialog();
             final responseData = jsonDecode(e.response.toString());
             // print(e.requestOptions.path);
             final SnackBar snackBar =
