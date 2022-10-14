@@ -28,7 +28,7 @@ class HomeServices {
 
   login(String name, String phoneNo) async {
     final response = await dio!
-        .post(ApiUrl.getToken, data: {"firstName": name, "phone": phoneNo});
+        .post(ApiUrl.getToken, data: {"name": name, "phone": phoneNo});
     print(response.data);
     if (response.data != null) {
       print('object');

@@ -8,10 +8,15 @@ class HomeController extends GetxController {
   RxList<FoodItem> items = <FoodItem>[].obs;
   RxList cart = [].obs;
   RxBool isFetched = false.obs;
+  RxString token = "".obs;
   late Box cartBox;
   @override
   onInit() {
     super.onInit();
+  }
+
+  func() async {
+    token.value = CookieManager().getCookie("id");
   }
 
   fetchItems() async {

@@ -26,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     _homeController.startDb();
+    _homeController.func();
     print('fetching items');
 
     _homeController.fetchItems();
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage> {
           appBar: AppBar(
             title: Text("MyApp"),
             actions: [
-              if (CookieManager().getCookie("id") != "")
+              if (_homeController.token.value.isNotEmpty)
                 GestureDetector(
                     onTap: () => Get.to(() => OrderHistory()),
                     child: Padding(

@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
                 DeviceOrientation.portraitUp,
               ]);
               return GetMaterialApp(
-                title: 'MyApp',
+                title: 'Food Wizard',
                 scaffoldMessengerKey: snackbarKey,
                 //  darkTheme: ThemeData.dark(),
                 theme: ThemeData(

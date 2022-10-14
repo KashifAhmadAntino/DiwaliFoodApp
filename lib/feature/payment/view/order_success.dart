@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gif/flutter_gif.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
+import 'package:mvc_bolierplate_getx/feature/home/controller/home_controller.dart';
 import 'package:mvc_bolierplate_getx/feature/model/order_model.dart';
 
 class OrderSuccess extends StatefulWidget {
@@ -46,9 +48,7 @@ class _OrderSuccessState extends State<OrderSuccess>
           children: [
             SizedBox(
               height: size.height * 0.6,
-              child: GifImage(
-                  controller: controller1,
-                  image: const AssetImage("assets/image-2.gif")),
+              child: Lottie.asset('assets/107043-success.json'),
             ),
             Text(
               'Order ID: ${widget.order.orderDataId}',
@@ -78,6 +78,8 @@ class _OrderSuccessState extends State<OrderSuccess>
             ElevatedButton(
                 onPressed: () {
                   Get.back();
+                  final HomeController homeCOntroller = Get.find();
+                  homeCOntroller.func();
                 },
                 child: Text(
                   'Done',
