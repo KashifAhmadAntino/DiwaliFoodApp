@@ -224,6 +224,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     color: Colors.black),
               ),
               ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: result.items?.length ?? 0,
                   itemBuilder: (context, index) {
