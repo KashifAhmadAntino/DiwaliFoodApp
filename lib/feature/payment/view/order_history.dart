@@ -33,6 +33,7 @@ class OrderHistory extends StatelessWidget {
                       ListView.builder(
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
+                          reverse: true,
                           itemCount:
                               (orderHistoryController.data.value.data!).length,
                           itemBuilder: (context, index) {
@@ -128,22 +129,28 @@ class OrderHistory extends StatelessWidget {
                                           const Divider(
                                             thickness: 1,
                                           ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                'Show Items: ',
-                                                style: AppTextStyle.blackBold14,
+                                          GestureDetector(
+                                            onTap: () =>
+                                                show.value = !show.value,
+                                            child: Container(
+                                              color: Colors.grey[100],
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    'Show Items: ',
+                                                    style: AppTextStyle
+                                                        .blackBold14,
+                                                  ),
+                                                  const Icon(
+                                                      Icons.arrow_drop_down)
+                                                ],
                                               ),
-                                              GestureDetector(
-                                                  onTap: () =>
-                                                      show.value = !show.value,
-                                                  child: const Icon(
-                                                      Icons.arrow_drop_down))
-                                            ],
+                                            ),
                                           ),
                                           ...List.generate(
                                             show.value

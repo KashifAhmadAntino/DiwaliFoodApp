@@ -48,9 +48,18 @@ class _HomePageState extends State<HomePage> {
               width: double.maxFinite,
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
               child: _homeController.items.isEmpty
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
+                  ? _homeController.isFetched.value
+                      ? ListView(
+                          children: [1, 2, 3]
+                              .map((e) => Image.network(
+                                    'https://res.cloudinary.com/practicaldev/image/fetch/s--MOKp0Jew--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://www.probytes.net/wp-content/uploads/2018/01/4-1.png',
+                                    width: double.maxFinite,
+                                  ))
+                              .toList(),
+                        )
+                      : const Center(
+                          child: CircularProgressIndicator(),
+                        )
                   : WatchBoxBuilder(
                       box: Hive.box('Cart'),
                       builder: ((context, box) {
@@ -99,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                             );
                           }),
                         );
-                      }))
+                      })).paddingOnly(bottom: 40)
 
               // ValueListenableBuilder(
               //   valueListenable: Hive.box<Map<String,dynamic>>('Cart').listenable(),
