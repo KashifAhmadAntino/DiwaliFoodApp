@@ -24,6 +24,7 @@ dependencies:
   hive_flutter: ^1.1.0
   path_provider:
   flutter_gif: ^0.0.4 
+  lottie: ^1.4.3
 
 dev_dependencies:
   flutter_lints: ^2.0.0
